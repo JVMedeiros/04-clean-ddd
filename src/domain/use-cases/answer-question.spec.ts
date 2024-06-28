@@ -9,7 +9,6 @@ describe('Create an answer', () => {
   it('Should be able to create a new answer')
     ; async () => {
       const answerQuestion = new AnswerQuestionUseCase(fakeAnswerRepository)
-
       await expect(() =>
         answerQuestion.execute({
           questionId: '1',
