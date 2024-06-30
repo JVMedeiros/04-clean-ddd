@@ -54,5 +54,24 @@ describe('Choose Question Best Answer', () => {
       })
     }).rejects.toBeInstanceOf(Error)
   })
+  it('Should not be able to choose an inexistent answer', async () => {
+    const question = makeQuestion({
+      authorId: new UniqueEntityID()
+    })
+    const answer = makeAnswer({
+      questionId: question.id
+    })
+
+    await inMemoryQuestionsRepository.create(question)
+    await inMemoryAnswersRepository.create(answer)
+
+
+    await expect(() => {
+      return sut.execute({
+        answerId: 'answer-1',
+        authorId: question.authorId.toString()
+      })
+    }).rejects.toBeInstanceOf(Error)
+  })
 
 })
