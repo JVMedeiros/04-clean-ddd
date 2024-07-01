@@ -5,6 +5,8 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { expect } from 'vitest'
 import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer'
+import { NotAllowedError } from './errors/not-allowed-error'
+import { ResourceNotFoundError } from './errors/resource-not-found'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
@@ -31,7 +33,7 @@ describe('Choose Question Best Answer', () => {
 
     await sut.execute({
       answerId: answer.id.toString(),
-      authorId: question.authorId.toString(),
+      authorId: question.authorId.toString()
     })
 
     expect(inMemoryQuestionsRepository.items[0].bestAnswerId).toEqual(answer.id)
@@ -48,12 +50,14 @@ describe('Choose Question Best Answer', () => {
     await inMemoryQuestionsRepository.create(question)
     await inMemoryAnswersRepository.create(answer)
 
-    await expect(() => {
-      return sut.execute({
-        answerId: answer.id.toString(),
-        authorId: 'author-2',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      answerId: answer.id.toString(),
+      authorId: 'author-2',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
+
   })
   it('Should not be able to choose an inexistent answer', async () => {
     const question = makeQuestion({
@@ -66,12 +70,13 @@ describe('Choose Question Best Answer', () => {
     await inMemoryQuestionsRepository.create(question)
     await inMemoryAnswersRepository.create(answer)
 
-    await expect(() => {
-      return sut.execute({
-        answerId: 'answer-1',
-        authorId: question.authorId.toString(),
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      answerId: 'answer-1',
+      authorId: question.authorId.toString(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 
   it('Should not be able to choose an answer for an inexistent question', async () => {
@@ -83,11 +88,11 @@ describe('Choose Question Best Answer', () => {
     await inMemoryQuestionsRepository.create(question)
     await inMemoryAnswersRepository.create(answer)
 
-    await expect(() => {
-      return sut.execute({
-        answerId: answer.id.toString(),
-        authorId: question.authorId.toString(),
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      answerId: answer.id.toString(),
+      authorId: question.authorId.toString(),
+    })
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })
