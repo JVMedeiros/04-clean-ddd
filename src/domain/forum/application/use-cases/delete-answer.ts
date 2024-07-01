@@ -5,14 +5,13 @@ interface DeleteAnswerUseCaseRequest {
   answerId: string
 }
 
-interface DeleteAnswerUseCaseResponse {
-}
+interface DeleteAnswerUseCaseResponse {}
 
 export class DeleteAnswerUseCase {
-  constructor(private answersRepository: AnswersRepository) { }
+  constructor(private answersRepository: AnswersRepository) {}
   async execute({
     answerId,
-    authorId
+    authorId,
   }: DeleteAnswerUseCaseRequest): Promise<DeleteAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId)
 
