@@ -13,27 +13,32 @@ describe('Delete Answer', () => {
     sut = new DeleteAnswerUseCase(inMemoryAnswersRepository)
   })
   it('Should be able to delete a answer', async () => {
-    const newAnswer = makeAnswer({ authorId: new UniqueEntityID('author-1') }, new UniqueEntityID('answer-1'))
+    const newAnswer = makeAnswer(
+      { authorId: new UniqueEntityID('author-1') },
+      new UniqueEntityID('answer-1'),
+    )
     await inMemoryAnswersRepository.create(newAnswer)
 
     await sut.execute({
       answerId: 'answer-1',
-      authorId: 'author-1'
+      authorId: 'author-1',
     })
 
     expect(inMemoryAnswersRepository.items).toHaveLength(0)
   })
 
   it('Should not be able to delete a answer from another author', async () => {
-    const newAnswer = makeAnswer({ authorId: new UniqueEntityID('author-1') }, new UniqueEntityID('answer-1'))
+    const newAnswer = makeAnswer(
+      { authorId: new UniqueEntityID('author-1') },
+      new UniqueEntityID('answer-1'),
+    )
     await inMemoryAnswersRepository.create(newAnswer)
 
     await expect(() => {
       return sut.execute({
         answerId: 'answer-1',
-        authorId: 'author-2'
+        authorId: 'author-2',
       })
     }).rejects.toBeInstanceOf(Error)
   })
 })
-
