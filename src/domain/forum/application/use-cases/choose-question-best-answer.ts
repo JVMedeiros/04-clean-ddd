@@ -15,7 +15,7 @@ export class ChooseQuestionBestAnswerUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
     private answersRepository: AnswersRepository,
-  ) { }
+  ) {}
 
   async execute({
     answerId,
@@ -27,7 +27,9 @@ export class ChooseQuestionBestAnswerUseCase {
       throw new Error('Answer not found')
     }
 
-    const question = await this.questionsRepository.findById(answer.questionId.toString())
+    const question = await this.questionsRepository.findById(
+      answer.questionId.toString(),
+    )
 
     if (!question) {
       throw new Error('question not found')
@@ -41,8 +43,7 @@ export class ChooseQuestionBestAnswerUseCase {
     await this.questionsRepository.save(question)
 
     return {
-      question
+      question,
     }
-
   }
 }
