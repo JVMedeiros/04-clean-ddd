@@ -13,21 +13,25 @@ describe('Comment on Answer', () => {
     inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository()
 
-    sut = new CommentOnAnswerUseCase(inMemoryAnswersRepository, inMemoryAnswerCommentsRepository)
+    sut = new CommentOnAnswerUseCase(
+      inMemoryAnswersRepository,
+      inMemoryAnswerCommentsRepository,
+    )
   })
   it('Should be able to comment on answer', async () => {
     const answer = makeAnswer()
 
     await inMemoryAnswersRepository.create(answer)
 
-
     await sut.execute({
       answerId: answer.id.toString(),
       authorId: answer.authorId.toString(),
-      content: 'Comentário teste'
+      content: 'Comentário teste',
     })
 
-    expect(inMemoryAnswerCommentsRepository.items[0].content).toEqual('Comentário teste')
+    expect(inMemoryAnswerCommentsRepository.items[0].content).toEqual(
+      'Comentário teste',
+    )
   })
 
   it('Should not be able to comment in an inexistent answer', async () => {
@@ -39,9 +43,8 @@ describe('Comment on Answer', () => {
       return sut.execute({
         answerId: 'fake-id',
         authorId: answer.authorId.toString(),
-        content: 'Comentário teste'
+        content: 'Comentário teste',
       })
     }).rejects.toBeInstanceOf(Error)
   })
-
 })
