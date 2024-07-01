@@ -13,7 +13,10 @@ describe('Edit Answer', () => {
     sut = new EditAnswerUseCase(inMemoryAnswersRepository)
   })
   it('Should be able to edit a answer', async () => {
-    const newAnswer = makeAnswer({ authorId: new UniqueEntityID('author-1') }, new UniqueEntityID('answer-1'))
+    const newAnswer = makeAnswer(
+      { authorId: new UniqueEntityID('author-1') },
+      new UniqueEntityID('answer-1'),
+    )
     await inMemoryAnswersRepository.create(newAnswer)
 
     await sut.execute({
@@ -28,7 +31,10 @@ describe('Edit Answer', () => {
   })
 
   it('Should not be able to edit a answer with an invalid id', async () => {
-    const newAnswer = makeAnswer({ authorId: new UniqueEntityID('author-1') }, new UniqueEntityID('answer-1'))
+    const newAnswer = makeAnswer(
+      { authorId: new UniqueEntityID('author-1') },
+      new UniqueEntityID('answer-1'),
+    )
     await inMemoryAnswersRepository.create(newAnswer)
 
     await expect(() => {
@@ -41,7 +47,10 @@ describe('Edit Answer', () => {
   })
 
   it('Should not be able to edit a answer from another author', async () => {
-    const newAnswer = makeAnswer({ authorId: new UniqueEntityID('author-1') }, new UniqueEntityID('answer-1'))
+    const newAnswer = makeAnswer(
+      { authorId: new UniqueEntityID('author-1') },
+      new UniqueEntityID('answer-1'),
+    )
     await inMemoryAnswersRepository.create(newAnswer)
 
     await expect(() => {
@@ -53,4 +62,3 @@ describe('Edit Answer', () => {
     }).rejects.toBeInstanceOf(Error)
   })
 })
-
