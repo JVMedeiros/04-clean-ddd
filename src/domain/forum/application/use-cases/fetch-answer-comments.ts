@@ -11,12 +11,13 @@ interface FetchAnswerCommentsUseCaseResponse {
 }
 
 export class FetchAnswerCommentsUseCase {
-  constructor(private answerCommentsRepository: AnswerCommentsRepository) { }
+  constructor(private answerCommentsRepository: AnswerCommentsRepository) {}
   async execute({
     answerId,
-    page
+    page,
   }: FetchAnswerCommentsUseCaseRequest): Promise<FetchAnswerCommentsUseCaseResponse> {
-    const answerComments = await this.answerCommentsRepository.findManyByAnswerId(answerId, { page })
+    const answerComments =
+      await this.answerCommentsRepository.findManyByAnswerId(answerId, { page })
 
     return { answerComments }
   }
