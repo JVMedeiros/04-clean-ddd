@@ -1,7 +1,6 @@
 import { makeQuestion } from 'test/factories/make-question'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { expect } from 'vitest'
-import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { FetchRecentQuestionsUseCase } from './fetch-recent-questions'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
@@ -13,18 +12,24 @@ describe('Fetch Recent Questions', () => {
     sut = new FetchRecentQuestionsUseCase(inMemoryQuestionsRepository)
   })
   it('Should be able to fetch recent questions', async () => {
-    await inMemoryQuestionsRepository.create(makeQuestion({ createdAt: new Date(2022, 0, 20) }))
-    await inMemoryQuestionsRepository.create(makeQuestion({ createdAt: new Date(2022, 0, 21) }))
-    await inMemoryQuestionsRepository.create(makeQuestion({ createdAt: new Date(2022, 0, 22) }))
+    await inMemoryQuestionsRepository.create(
+      makeQuestion({ createdAt: new Date(2022, 0, 20) }),
+    )
+    await inMemoryQuestionsRepository.create(
+      makeQuestion({ createdAt: new Date(2022, 0, 21) }),
+    )
+    await inMemoryQuestionsRepository.create(
+      makeQuestion({ createdAt: new Date(2022, 0, 22) }),
+    )
 
     const { questions } = await sut.execute({
-      page: 1
+      page: 1,
     })
 
     expect(questions).toEqual([
       expect.objectContaining({ createdAt: new Date(2022, 0, 22) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 21) }),
-      expect.objectContaining({ createdAt: new Date(2022, 0, 20) })
+      expect.objectContaining({ createdAt: new Date(2022, 0, 20) }),
     ])
   })
 
@@ -33,10 +38,9 @@ describe('Fetch Recent Questions', () => {
       await inMemoryQuestionsRepository.create(makeQuestion())
     }
     const { questions } = await sut.execute({
-      page: 2
+      page: 2,
     })
 
     expect(questions).toHaveLength(2)
   })
 })
-
