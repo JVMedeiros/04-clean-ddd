@@ -16,8 +16,9 @@ interface CommentOnQuestionUseCaseResponse {
 export class CommentOnQuestionUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
-    private questionCommentsRepository: QuestionCommentsRepository
-  ) { }
+    private questionCommentsRepository: QuestionCommentsRepository,
+  ) {}
+
   async execute({
     authorId,
     questionId,
@@ -31,12 +32,11 @@ export class CommentOnQuestionUseCase {
     const questionComment = QuestionComment.create({
       authorId: new UniqueEntityID(authorId),
       questionId: new UniqueEntityID(questionId),
-      content
+      content,
     })
 
     await this.questionCommentsRepository.create(questionComment)
 
     return { questionComment }
-
   }
 }
