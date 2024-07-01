@@ -5,18 +5,17 @@ interface DeleteAnswerCommentUseCaseRequest {
   answerCommentId: string
 }
 
-interface DeleteAnswerCommentUseCaseResponse {
-}
+interface DeleteAnswerCommentUseCaseResponse {}
 
 export class DeleteAnswerCommentUseCase {
-  constructor(
-    private answerCommentsRepository: AnswerCommentsRepository
-  ) { }
+  constructor(private answerCommentsRepository: AnswerCommentsRepository) {}
+
   async execute({
     authorId,
     answerCommentId,
   }: DeleteAnswerCommentUseCaseRequest): Promise<DeleteAnswerCommentUseCaseResponse> {
-    const answerComment = await this.answerCommentsRepository.findById(answerCommentId)
+    const answerComment =
+      await this.answerCommentsRepository.findById(answerCommentId)
     if (!answerComment) {
       throw new Error('Answer not found')
     }
@@ -25,10 +24,8 @@ export class DeleteAnswerCommentUseCase {
       throw new Error('Not allowed')
     }
 
-
     await this.answerCommentsRepository.delete(answerComment)
 
     return {}
-
   }
 }
