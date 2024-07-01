@@ -21,7 +21,7 @@ describe('Delete Answer Comment', () => {
 
     await sut.execute({
       answerCommentId: answerComment.id.toString(),
-      authorId: answerComment.authorId.toString(),
+      authorId: answerComment.authorId.toString()
     })
 
     expect(inMemoryAnswerCommentsRepository.items).toHaveLength(0)
