@@ -41,4 +41,20 @@ describe('Delete Answer Comment', () => {
       })
     }).rejects.toBeInstanceOf(Error)
   })
+
+  it('Should not be able to delete another user answer comment', async () => {
+    const answerComment = makeAnswerComment({
+      authorId: new UniqueEntityID('author-1')
+    })
+
+    await inMemoryAnswerCommentsRepository.create(answerComment)
+
+
+    await expect(() => {
+      return sut.execute({
+        answerCommentId: answerComment.id.toString(),
+        authorId: 'author-2',
+      })
+    }).rejects.toBeInstanceOf(Error)
+  })
 })
