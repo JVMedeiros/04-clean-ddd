@@ -3,6 +3,7 @@ import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-an
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 import { expect } from 'vitest'
 import { CommentOnAnswerUseCase } from './comment-on-answer'
+import { ResourceNotFoundError } from './errors/resource-not-found'
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
@@ -30,7 +31,7 @@ describe('Comment on Answer', () => {
     })
 
     expect(inMemoryAnswerCommentsRepository.items[0].content).toEqual(
-      'Comentário teste',
+      'Comentário teste'
     )
   })
 
@@ -39,12 +40,13 @@ describe('Comment on Answer', () => {
 
     await inMemoryAnswersRepository.create(answer)
 
-    await expect(() => {
-      return sut.execute({
-        answerId: 'fake-id',
-        authorId: answer.authorId.toString(),
-        content: 'Comentário teste',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      answerId: 'fake-id',
+      authorId: answer.authorId.toString(),
+      content: 'Comentário teste',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })
