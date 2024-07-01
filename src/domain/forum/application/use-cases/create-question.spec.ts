@@ -1,6 +1,5 @@
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { expect } from 'vitest'
-import { QuestionsRepository } from '../repositories/questions-respository'
 import { CreateQuestionUseCase } from './create-question'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
@@ -20,7 +19,5 @@ describe('Create Question', () => {
 
     expect(question.id).toBeTruthy()
     expect(inMemoryQuestionsRepository.items[0].id).toEqual(question.id)
-
   })
 })
-
