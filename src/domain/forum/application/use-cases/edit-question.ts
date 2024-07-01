@@ -13,12 +13,12 @@ interface EditQuestionUseCaseResponse {
 }
 
 export class EditQuestionUseCase {
-  constructor(private questionsRepository: QuestionsRepository) { }
+  constructor(private questionsRepository: QuestionsRepository) {}
   async execute({
     authorId,
     title,
     content,
-    questionId
+    questionId,
   }: EditQuestionUseCaseRequest): Promise<EditQuestionUseCaseResponse> {
     const question = await this.questionsRepository.findById(questionId)
 
@@ -33,10 +33,9 @@ export class EditQuestionUseCase {
     question.title = title
     question.content = content
 
-
     await this.questionsRepository.save(question)
     return {
-      question
+      question,
     }
   }
 }
