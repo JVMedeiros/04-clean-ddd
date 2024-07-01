@@ -15,21 +15,23 @@ describe('Choose Question Best Answer', () => {
     inMemoryAnswersRepository = new InMemoryAnswersRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
 
-    sut = new ChooseQuestionBestAnswerUseCase(inMemoryQuestionsRepository, inMemoryAnswersRepository)
+    sut = new ChooseQuestionBestAnswerUseCase(
+      inMemoryQuestionsRepository,
+      inMemoryAnswersRepository,
+    )
   })
   it('Should be able to choose question best answer', async () => {
     const question = makeQuestion()
     const answer = makeAnswer({
-      questionId: question.id
+      questionId: question.id,
     })
 
     await inMemoryQuestionsRepository.create(question)
     await inMemoryAnswersRepository.create(answer)
 
-
     await sut.execute({
       answerId: answer.id.toString(),
-      authorId: question.authorId.toString()
+      authorId: question.authorId.toString(),
     })
 
     expect(inMemoryQuestionsRepository.items[0].bestAnswerId).toEqual(answer.id)
@@ -37,59 +39,55 @@ describe('Choose Question Best Answer', () => {
 
   it('Should not be able to choose another user best answer', async () => {
     const question = makeQuestion({
-      authorId: new UniqueEntityID('author-1')
+      authorId: new UniqueEntityID('author-1'),
     })
     const answer = makeAnswer({
-      questionId: question.id
+      questionId: question.id,
     })
 
     await inMemoryQuestionsRepository.create(question)
     await inMemoryAnswersRepository.create(answer)
 
-
     await expect(() => {
       return sut.execute({
         answerId: answer.id.toString(),
-        authorId: 'author-2'
+        authorId: 'author-2',
       })
     }).rejects.toBeInstanceOf(Error)
   })
   it('Should not be able to choose an inexistent answer', async () => {
     const question = makeQuestion({
-      authorId: new UniqueEntityID()
+      authorId: new UniqueEntityID(),
     })
     const answer = makeAnswer({
-      questionId: question.id
+      questionId: question.id,
     })
 
     await inMemoryQuestionsRepository.create(question)
     await inMemoryAnswersRepository.create(answer)
 
-
     await expect(() => {
       return sut.execute({
         answerId: 'answer-1',
-        authorId: question.authorId.toString()
+        authorId: question.authorId.toString(),
       })
     }).rejects.toBeInstanceOf(Error)
   })
 
   it('Should not be able to choose an answer for an inexistent question', async () => {
     const question = makeQuestion({
-      authorId: new UniqueEntityID('invalid-id')
+      authorId: new UniqueEntityID('invalid-id'),
     })
     const answer = makeAnswer()
 
     await inMemoryQuestionsRepository.create(question)
     await inMemoryAnswersRepository.create(answer)
 
-
     await expect(() => {
       return sut.execute({
         answerId: answer.id.toString(),
-        authorId: question.authorId.toString()
+        authorId: question.authorId.toString(),
       })
     }).rejects.toBeInstanceOf(Error)
   })
-
 })
