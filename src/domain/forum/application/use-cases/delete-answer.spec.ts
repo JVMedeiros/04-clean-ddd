@@ -22,7 +22,7 @@ describe('Delete Answer', () => {
 
     await sut.execute({
       answerId: 'answer-1',
-      authorId: 'author-1'
+      authorId: 'author-1',
     })
 
     expect(inMemoryAnswersRepository.items).toHaveLength(0)
@@ -42,6 +42,5 @@ describe('Delete Answer', () => {
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(NotAllowedError)
-
   })
 })
