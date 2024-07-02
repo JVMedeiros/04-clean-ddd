@@ -10,12 +10,15 @@ interface EditAnswerUseCaseRequest {
   answerId: string
 }
 
-type EditAnswerUseCaseResponse = Either<ResourceNotFoundError | NotAllowedError, {
-  answer: Answer
-}>
+type EditAnswerUseCaseResponse = Either<
+  ResourceNotFoundError | NotAllowedError,
+  {
+    answer: Answer
+  }
+>
 
 export class EditAnswerUseCase {
-  constructor(private answersRepository: AnswersRepository) { }
+  constructor(private answersRepository: AnswersRepository) {}
   async execute({
     authorId,
     content,
