@@ -7,12 +7,15 @@ interface FetchQuestionCommentsUseCaseRequest {
   page: number
 }
 
-type FetchQuestionCommentsUseCaseResponse = Either<null, {
-  questionComments: QuestionComment[]
-}>
+type FetchQuestionCommentsUseCaseResponse = Either<
+  null,
+  {
+    questionComments: QuestionComment[]
+  }
+>
 
 export class FetchQuestionCommentsUseCase {
-  constructor(private questionCommentsRepository: QuestionCommentsRepository) { }
+  constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
   async execute({
     questionId,
     page,
