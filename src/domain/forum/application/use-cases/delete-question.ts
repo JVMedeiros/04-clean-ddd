@@ -8,10 +8,13 @@ interface DeleteQuestionUseCaseRequest {
   questionId: string
 }
 
-type DeleteQuestionUseCaseResponse = Either<ResourceNotFoundError | NotAllowedError, {}>
+type DeleteQuestionUseCaseResponse = Either<
+  ResourceNotFoundError | NotAllowedError,
+  NonNullable<unknown>
+>
 
 export class DeleteQuestionUseCase {
-  constructor(private questionsRepository: QuestionsRepository) { }
+  constructor(private questionsRepository: QuestionsRepository) {}
   async execute({
     questionId,
     authorId,
