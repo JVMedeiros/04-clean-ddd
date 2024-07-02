@@ -1,6 +1,7 @@
 import { Either, right } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Question } from '../../enterprise/entities/question'
+import { QuestionAttachmentList } from '../../enterprise/entities/question-attachment-list'
 import { QuestionAttachment } from '../../enterprise/entities/question-attatchment'
 import { QuestionsRepository } from '../repositories/questions-respository'
 
@@ -11,17 +12,20 @@ interface CreateQuestionUseCaseRequest {
   attachmentsIds: string[]
 }
 
-type CreateQuestionUseCaseResponse = Either<null, {
-  question: Question
-}>
+type CreateQuestionUseCaseResponse = Either<
+  null,
+  {
+    question: Question
+  }
+>
 
 export class CreateQuestionUseCase {
-  constructor(private questionsRepository: QuestionsRepository) { }
+  constructor(private questionsRepository: QuestionsRepository) {}
   async execute({
     authorId,
     title,
     content,
-    attachmentsIds
+    attachmentsIds,
   }: CreateQuestionUseCaseRequest): Promise<CreateQuestionUseCaseResponse> {
     const question = Question.create({
       authorId: new UniqueEntityID(authorId),
@@ -36,7 +40,7 @@ export class CreateQuestionUseCase {
       })
     })
 
-    question.attachments = questionAttachments
+    question.attachments = new QuestionAttachmentList(questionAttachments)
 
     await this.questionsRepository.create(question)
     return right({ question })
