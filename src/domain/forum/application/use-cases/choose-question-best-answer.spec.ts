@@ -33,7 +33,7 @@ describe('Choose Question Best Answer', () => {
 
     await sut.execute({
       answerId: answer.id.toString(),
-      authorId: question.authorId.toString()
+      authorId: question.authorId.toString(),
     })
 
     expect(inMemoryQuestionsRepository.items[0].bestAnswerId).toEqual(answer.id)
@@ -57,7 +57,6 @@ describe('Choose Question Best Answer', () => {
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(NotAllowedError)
-
   })
   it('Should not be able to choose an inexistent answer', async () => {
     const question = makeQuestion({
