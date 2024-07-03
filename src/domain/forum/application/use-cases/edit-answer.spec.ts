@@ -14,9 +14,15 @@ let sut: EditAnswerUseCase
 
 describe('Edit Answer', () => {
   beforeEach(() => {
-    inMemoryAnswerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
-    inMemoryAnswersRepository = new InMemoryAnswersRepository(inMemoryAnswerAttachmentsRepository)
-    sut = new EditAnswerUseCase(inMemoryAnswersRepository, inMemoryAnswerAttachmentsRepository)
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository,
+    )
+    sut = new EditAnswerUseCase(
+      inMemoryAnswersRepository,
+      inMemoryAnswerAttachmentsRepository,
+    )
   })
   it('Should be able to edit a answer', async () => {
     const newAnswer = makeAnswer(
@@ -27,19 +33,19 @@ describe('Edit Answer', () => {
     await inMemoryAnswerAttachmentsRepository.items.push(
       makeAnswerAttachment({
         answerId: newAnswer.id,
-        attachmentId: new UniqueEntityID('1')
+        attachmentId: new UniqueEntityID('1'),
       }),
       makeAnswerAttachment({
         answerId: newAnswer.id,
-        attachmentId: new UniqueEntityID('2')
-      })
+        attachmentId: new UniqueEntityID('2'),
+      }),
     )
 
     await sut.execute({
       authorId: 'author-1',
       content: 'Content update',
       answerId: newAnswer.id.toValue(),
-      attachmentsIds: ['1', '3']
+      attachmentsIds: ['1', '3'],
     })
 
     expect(inMemoryAnswersRepository.items[0]).toMatchObject({
@@ -48,12 +54,12 @@ describe('Edit Answer', () => {
     expect(
       inMemoryAnswersRepository.items[0].attachments.currentItems,
     ).toHaveLength(2)
-    expect(
-      inMemoryAnswersRepository.items[0].attachments.currentItems,
-    ).toEqual([
-      expect.objectContaining({ attachmentId: new UniqueEntityID('1') }),
-      expect.objectContaining({ attachmentId: new UniqueEntityID('3') }),
-    ])
+    expect(inMemoryAnswersRepository.items[0].attachments.currentItems).toEqual(
+      [
+        expect.objectContaining({ attachmentId: new UniqueEntityID('1') }),
+        expect.objectContaining({ attachmentId: new UniqueEntityID('3') }),
+      ],
+    )
   })
 
   it('Should not be able to edit a answer with an invalid id', async () => {
@@ -67,7 +73,7 @@ describe('Edit Answer', () => {
       authorId: 'author-1',
       content: 'Content update',
       answerId: 'answer-2',
-      attachmentsIds: ['1', '3']
+      attachmentsIds: ['1', '3'],
     })
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(ResourceNotFoundError)
@@ -84,7 +90,7 @@ describe('Edit Answer', () => {
       authorId: 'author-2',
       content: 'Content update',
       answerId: newAnswer.id.toValue(),
-      attachmentsIds: ['1', '3']
+      attachmentsIds: ['1', '3'],
     })
 
     expect(result.isLeft()).toBe(true)

@@ -10,8 +10,11 @@ let sut: AnswerQuestionUseCase
 
 describe('Create Question', () => {
   beforeEach(() => {
-    inMemoryAnswerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
-    inMemoryAnswersRepository = new InMemoryAnswersRepository(inMemoryAnswerAttachmentsRepository)
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository,
+    )
     sut = new AnswerQuestionUseCase(inMemoryAnswersRepository)
   })
   it('Should be able to create an answer', async () => {
@@ -19,7 +22,7 @@ describe('Create Question', () => {
       questionId: '1',
       instructorId: '1',
       content: 'teste resposta',
-      attachmentsIds: ['1', '2']
+      attachmentsIds: ['1', '2'],
     })
 
     expect(result.isRight()).toBe(true)
@@ -27,11 +30,11 @@ describe('Create Question', () => {
     expect(
       inMemoryAnswersRepository.items[0].attachments.currentItems,
     ).toHaveLength(2)
-    expect(
-      inMemoryAnswersRepository.items[0].attachments.currentItems,
-    ).toEqual([
-      expect.objectContaining({ attachmentId: new UniqueEntityID('1') }),
-      expect.objectContaining({ attachmentId: new UniqueEntityID('2') }),
-    ])
+    expect(inMemoryAnswersRepository.items[0].attachments.currentItems).toEqual(
+      [
+        expect.objectContaining({ attachmentId: new UniqueEntityID('1') }),
+        expect.objectContaining({ attachmentId: new UniqueEntityID('2') }),
+      ],
+    )
   })
 })

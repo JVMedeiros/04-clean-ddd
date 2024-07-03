@@ -1,5 +1,5 @@
 import { AnswersRepository } from '../repositories/answers-repository'
-import { Question } from '@/domain/forum/application/enterprise/entities/question'
+import { Question } from '@/domain/forum/enterprise/entities/question'
 import { QuestionsRepository } from '@/domain/forum/application/repositories/questions-respository'
 import { Either, left, right } from '@/core/either'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found'
@@ -21,7 +21,7 @@ export class ChooseQuestionBestAnswerUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
     private answersRepository: AnswersRepository,
-  ) { }
+  ) {}
 
   async execute({
     answerId,

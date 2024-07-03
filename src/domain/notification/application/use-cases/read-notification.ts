@@ -1,10 +1,8 @@
 import { Either, left, right } from '@/core/either'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found'
 import { Notification } from '../../enterprise/entities/notification'
 import { NotificationsRepository } from '../repositories/notifications-repository'
-
 
 interface ReadNotificationUseCaseRequest {
   notificationId: string
@@ -19,12 +17,13 @@ type ReadNotificationUseCaseResponse = Either<
 >
 
 export class ReadNotificationUseCase {
-  constructor(private notificationsRepository: NotificationsRepository) { }
+  constructor(private notificationsRepository: NotificationsRepository) {}
   async execute({
     recipientId,
     notificationId,
   }: ReadNotificationUseCaseRequest): Promise<ReadNotificationUseCaseResponse> {
-    const notification = await this.notificationsRepository.findById(notificationId)
+    const notification =
+      await this.notificationsRepository.findById(notificationId)
 
     if (!notification) {
       return left(new ResourceNotFoundError())

@@ -1,5 +1,5 @@
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { QuestionAttachment, QuestionAttachmentProps } from '@/domain/forum/application/enterprise/entities/question-attatchment';
+import { QuestionAttachment, QuestionAttachmentProps } from '@/domain/forum/enterprise/entities/question-attatchment';
 
 export function makeQuestionAttachment(
   override: Partial<QuestionAttachmentProps> = {},

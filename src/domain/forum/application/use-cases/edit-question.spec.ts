@@ -14,11 +14,14 @@ let sut: EditQuestionUseCase
 
 describe('Edit Question', () => {
   beforeEach(() => {
-    inMemoryQuestionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(inMemoryQuestionAttachmentsRepository)
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentsRepository()
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository,
+    )
     sut = new EditQuestionUseCase(
       inMemoryQuestionsRepository,
-      inMemoryQuestionAttachmentsRepository
+      inMemoryQuestionAttachmentsRepository,
     )
   })
   it('Should be able to edit a question', async () => {
@@ -30,12 +33,12 @@ describe('Edit Question', () => {
     await inMemoryQuestionAttachmentsRepository.items.push(
       makeQuestionAttachment({
         questionId: newQuestion.id,
-        attachmentId: new UniqueEntityID('1')
+        attachmentId: new UniqueEntityID('1'),
       }),
       makeQuestionAttachment({
         questionId: newQuestion.id,
-        attachmentId: new UniqueEntityID('2')
-      })
+        attachmentId: new UniqueEntityID('2'),
+      }),
     )
 
     await sut.execute({
@@ -43,7 +46,7 @@ describe('Edit Question', () => {
       title: 'Title update',
       content: 'Content update',
       questionId: newQuestion.id.toValue(),
-      attachmentsIds: ['1', '3']
+      attachmentsIds: ['1', '3'],
     })
 
     expect(inMemoryQuestionsRepository.items[0]).toMatchObject({
@@ -73,7 +76,7 @@ describe('Edit Question', () => {
       title: 'Title update',
       content: 'Content update',
       questionId: 'question-2',
-      attachmentsIds: ['1', '3']
+      attachmentsIds: ['1', '3'],
     })
 
     expect(result.isLeft()).toBe(true)
@@ -92,7 +95,7 @@ describe('Edit Question', () => {
       title: 'Title update',
       content: 'Content update',
       questionId: newQuestion.id.toValue(),
-      attachmentsIds: ['1', '3']
+      attachmentsIds: ['1', '3'],
     })
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(NotAllowedError)

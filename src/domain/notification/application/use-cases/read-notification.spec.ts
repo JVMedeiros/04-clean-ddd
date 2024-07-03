@@ -20,20 +20,24 @@ describe('Read Notification', () => {
 
     const result = await sut.execute({
       recipientId: notification.recipientId.toString(),
-      notificationId: notification.id.toString()
+      notificationId: notification.id.toString(),
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryNotificationsRepository.items[0].readAt).toEqual(expect.any(Date))
+    expect(inMemoryNotificationsRepository.items[0].readAt).toEqual(
+      expect.any(Date),
+    )
   })
 
   it('Should not be able to read an notification from another recipient', async () => {
-    const notification = makeNotification({ recipientId: new UniqueEntityID('recipient-1') })
+    const notification = makeNotification({
+      recipientId: new UniqueEntityID('recipient-1'),
+    })
     await inMemoryNotificationsRepository.create(notification)
 
     const result = await sut.execute({
       recipientId: 'recipient-2',
-      notificationId: notification.id.toString()
+      notificationId: notification.id.toString(),
     })
 
     expect(result.isLeft()).toBe(true)
@@ -41,14 +45,15 @@ describe('Read Notification', () => {
   })
 
   it('Should not be able to read an inexistent notification', async () => {
-    const notification = makeNotification({},
+    const notification = makeNotification(
+      {},
       new UniqueEntityID('notification-1'),
     )
     await inMemoryNotificationsRepository.create(notification)
 
     const result = await sut.execute({
       recipientId: notification.recipientId.toString(),
-      notificationId: 'notification-2'
+      notificationId: 'notification-2',
     })
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(ResourceNotFoundError)
