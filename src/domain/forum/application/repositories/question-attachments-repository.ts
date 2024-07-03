@@ -1,4 +1,4 @@
-import { QuestionAttachment } from '../../enterprise/entities/question-attatchment'
+import { QuestionAttachment } from '../enterprise/entities/question-attatchment'
 
 export interface QuestionAttachmentsRepository {
   deleteManyByQuestionId(questionId: string): Promise<void>
