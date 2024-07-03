@@ -1,5 +1,5 @@
 import { Either, right } from '@/core/either'
-import { Question } from '../../enterprise/entities/question'
+import { Question } from '../enterprise/entities/question'
 import { QuestionsRepository } from '../repositories/questions-respository'
 
 interface FetchRecentQuestionsUseCaseRequest {
@@ -14,7 +14,7 @@ type FetchRecentQuestionsUseCaseResponse = Either<
 >
 
 export class FetchRecentQuestionsUseCase {
-  constructor(private questionsRepository: QuestionsRepository) {}
+  constructor(private questionsRepository: QuestionsRepository) { }
   async execute({
     page,
   }: FetchRecentQuestionsUseCaseRequest): Promise<FetchRecentQuestionsUseCaseResponse> {
