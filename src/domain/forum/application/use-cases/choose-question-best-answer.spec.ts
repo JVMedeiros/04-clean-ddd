@@ -7,8 +7,8 @@ import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memo
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { expect } from 'vitest'
 import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer'
-import { NotAllowedError } from './errors/not-allowed-error'
-import { ResourceNotFoundError } from './errors/resource-not-found'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found'
 
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
