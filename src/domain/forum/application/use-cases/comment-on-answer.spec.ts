@@ -4,7 +4,7 @@ import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-an
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 import { expect } from 'vitest'
 import { CommentOnAnswerUseCase } from './comment-on-answer'
-import { ResourceNotFoundError } from './errors/resource-not-found'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found'
 
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
